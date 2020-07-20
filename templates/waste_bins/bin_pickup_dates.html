@@ -1,0 +1,10 @@
+{% extends "_base.html" %}
+
+{% block content %}
+<h2>You're viewing your completed pick up dates for {{ bin_name }} bins.</h2>
+<ul>
+    {% for dates in bin_dates %}
+        <li>{{ dates.scheduled_date }}</li>
+    {% endfor %}
+</ul>
+{% endblock content %}

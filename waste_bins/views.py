@@ -62,9 +62,22 @@ class PickUpDeleteForm(LoginRequiredMixin,DeleteView):
 def dashboard(request):
     context = {}
     pick_up_list = PickUp.objects.filter(scheduled_user=request.user,completed=True).order_by('-completed')
-    context['total_poundage'] = pick_up_list.values('bin_type__name').annotate(total_pounds = Sum('weight'))
-    context['total_pickups'] = pick_up_list.values('bin_type__name').annotate(completed=Count('completed'))
-    print(pick_up_list.values('bin_type__name','scheduled_date'))
+    context['bin_type_data'] = pick_up_list.values('bin_type__name').annotate(total_pounds = Sum('weight'),completed=Count('completed'))
     return render(request,'waste_bins/dashboard.html',context)
+
+
+class BinPickUpDates(LoginRequiredMixin,ListView):
+    template_name = "waste_bins/bin_pickup_dates.html"
+    context_object_name = "bin_dates"
+
+    def get_queryset(self,**kwargs):
+        print(kwargs)
+        return PickUp.objects.filter(scheduled_user=self.request.user,bin_type__name=self.kwargs['bin_type_name'],completed=True)
+
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+        context['bin_name'] = self.kwargs['bin_type_name']
+        return context
+
 
     

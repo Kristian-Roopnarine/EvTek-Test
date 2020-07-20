@@ -11,5 +11,6 @@ urlpatterns = [
     path('schedule/delete-pick-up/<int:pk>/',views.PickUpDeleteForm.as_view(),name='delete-pick-up'),
 
 
-    path('dashboard/',views.dashboard,name="dashboard")
+    path('dashboard/',views.dashboard,name="dashboard"),
+    path('dashboard/bin-pickup-dates/<str:bin_type_name>/',views.BinPickUpDates.as_view(),name="dashboard-pickup-dates")
 ]
