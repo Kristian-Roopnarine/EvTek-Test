@@ -6,16 +6,12 @@ from django.contrib.admin.widgets import AdminSplitDateTime,AdminDateWidget,Admi
 class DateInput(forms.DateInput):
     input_type="date"
 
-class TimeInput(forms.TimeInput):
-    input_type='time'
-
 class PickUpForm(ModelForm):
     
     class Meta:
         model = PickUp
-        exclude=['scheduled_user']
+        exclude=['scheduled_user','completed']
         widgets = {
             'scheduled_date':DateInput(),
-            'scheduled_time':TimeInput()
         }
     

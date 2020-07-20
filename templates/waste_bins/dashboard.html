@@ -1,0 +1,12 @@
+{% extends "_base.html" %}
+
+{% block content %}
+<h2>This is your dashboard.</h2>
+{% for data in total_poundage %}
+    {{ data.bin_type__name }} , {{ data.total_pounds }}
+{% endfor %}
+
+{% for data in total_pickups %}
+    {{ data.bin_type__name }} , {{ data.completed }}
+{% endfor %}
+{% endblock content %}

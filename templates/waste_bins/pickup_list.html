@@ -14,6 +14,7 @@
             <th scope="col">Bin type</th>
             <th scope="col">Date</th>
             <th scope="col">Weight (lbs)</th>
+            <th scope="col">Completed</th>
             <th> </th>
         </tr>
         </thead>
@@ -21,8 +22,9 @@
             {% for pick_up in user_pick_ups %}
                 <tr>
                     <td>{{ pick_up.bin_type.name }}</td>
-                    <td>{{ pick_up.scheduled_date }}  {{pick_up.scheduled_time }}</td>
+                    <td>{{ pick_up.scheduled_date }}</td>
                     <td>{{ pick_up.weight }} </td>
+                    <td>{{ pick_up.completed }}</td>
                     <td><a class="btn btn-warning" href="{% url 'waste_bins:edit-pick-up' pick_up.id %}">Edit</a><a class="btn btn-danger" href="{% url 'waste_bins:delete-pick-up' pick_up.id %}">Delete</a></td>
                 </tr>
         {% endfor %}

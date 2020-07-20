@@ -23,8 +23,7 @@ class PickUp(models.Model):
     weight = models.FloatField()
     scheduled_user = models.ForeignKey(User,on_delete=models.CASCADE)
     scheduled_date = models.DateField()
-    scheduled_time = models.TimeField()
-
+    completed = models.BooleanField(default=False)
     # add notes
 
     def __str__(self):
