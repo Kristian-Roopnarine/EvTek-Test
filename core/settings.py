@@ -142,5 +142,5 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR,'static')]
 STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
 
-LOGIN_REDIRECT_URL = 'users:home'
-ACCOUNT_LOGOUT_REDIRECT = 'users:home'
+LOGIN_REDIRECT_URL = 'waste_bins:home'
+ACCOUNT_LOGOUT_REDIRECT = 'waste_bins:home'

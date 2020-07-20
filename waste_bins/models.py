@@ -22,7 +22,8 @@ class PickUp(models.Model):
     bin_type = models.ForeignKey(WasteBinType,on_delete=models.CASCADE)
     weight = models.FloatField()
     scheduled_user = models.ForeignKey(User,on_delete=models.CASCADE)
-    scheduled_date = models.DateTimeField()
+    scheduled_date = models.DateField()
+    scheduled_time = models.TimeField()
 
     # add notes
 

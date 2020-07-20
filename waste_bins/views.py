@@ -8,9 +8,11 @@ from .models import PickUp,WasteBinType,Notes
 from .forms import PickUpForm
 # Create your views here.
 
+# home
+def index(request):
+    return render(request,'_base.html')
 
 # list view for scheduled pick ups
-
 class PickUpList(LoginRequiredMixin,ListView):
     context_object_name = "user_pick_ups"
 
@@ -35,7 +37,6 @@ class PickUpUpdateForm(LoginRequiredMixin,UpdateView):
     template_name = 'waste_bins/pickup_form.html'
 
 # delete view of pick up
-
 class PickUpDeleteForm(LoginRequiredMixin,DeleteView):
     model = PickUp
     success_url = reverse_lazy('waste_bins:schedule-list')
