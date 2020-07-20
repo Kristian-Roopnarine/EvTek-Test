@@ -18,8 +18,10 @@ from django.urls import path,include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
     # v1 is first iteration
     path('users-v1/',include('users.urls',namespace="users")),
-    path('waste-bins-v1/',include('waste_bins.urls',namespace="waste-bin"))
+    path('waste-bins-v1/',include('waste_bins.urls',namespace="waste_bins")),
+
     path('accounts/',include('allauth.urls'))
 ]
