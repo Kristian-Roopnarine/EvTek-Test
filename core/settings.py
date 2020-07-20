@@ -46,11 +46,14 @@ INSTALLED_APPS = [
 
 
     # internal
-    'users.apps.UsersConfig'
+    'users.apps.UsersConfig',
+    'waste_bins.apps.WasteBinsConfig'
 ]
 
 SITE_ID=1
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+ACCOUNT_FORMS = {'signup': 'users.forms.CustomUserCreationForm'}
+
 
 AUTH_USER_MODEL = 'users.CustomUser'
 MIDDLEWARE = [
@@ -139,5 +142,5 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR,'static')]
 STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
 
-LOGIN_REDIRECT_URL = 'home'
-ACCOUNT_LOGOUT_REDIRECT = 'home'
+LOGIN_REDIRECT_URL = 'users:home'
+ACCOUNT_LOGOUT_REDIRECT = 'users:home'

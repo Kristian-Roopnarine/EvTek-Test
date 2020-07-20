@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser,Address,AccountType
+from .models import CustomUser,AccountType
 from .forms import CustomUserCreationForm
 # Register your models here.
 class CustomUserAdmin(UserAdmin):
@@ -9,5 +9,4 @@ class CustomUserAdmin(UserAdmin):
     list_display = ['email','username',]
     
 admin.site.register(CustomUser,CustomUserAdmin)
-admin.site.register(Address)
 admin.site.register(AccountType)
