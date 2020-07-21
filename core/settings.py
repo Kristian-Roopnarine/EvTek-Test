@@ -44,10 +44,10 @@ INSTALLED_APPS = [
     'allauth.account',
     'crispy_forms',
 
-
     # internal
     'users.apps.UsersConfig',
-    'waste_bins.apps.WasteBinsConfig'
+    'waste_bins.apps.WasteBinsConfig',
+    'v2_interface.apps.V2InterfaceConfig'
 ]
 
 SITE_ID=1
@@ -79,6 +79,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
             ],
         },
     },
@@ -142,5 +143,5 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR,'static')]
 STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
 
-LOGIN_REDIRECT_URL = 'waste_bins:home'
-ACCOUNT_LOGOUT_REDIRECT = 'waste_bins:home'
+LOGIN_REDIRECT_URL = 'v2_interface:home'
+ACCOUNT_LOGOUT_REDIRECT = 'v2_interface:home'

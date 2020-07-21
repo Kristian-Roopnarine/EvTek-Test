@@ -20,7 +20,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     # v1 is first iteration
-    path('waste-bins-v1/',include('waste_bins.urls',namespace="waste_bins")),
+    path('v1/home/',include('waste_bins.urls',namespace="waste_bins")),
+    path('v2/home/',include('v2_interface.urls')),
 
     path('accounts/',include('allauth.urls'))
 ]
