@@ -2,5 +2,26 @@
 {% load static %}
 
 {% block content %}
-{{ calendar }}
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-9">
+            {{ calendar }}
+        </div>
+        
+        
+        <div class="col-3">
+            <ul class="list-group">
+                <h3>Pick Up Orders</h3>
+                {% for object in object_list %}
+                    <li class="list-group-item">
+                        {{ object.bin_type__name }} {{object.scheduled_date}} {{object.completed }} {{ object.weight }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    </div>
+</div>
+
 {% endblock content %}

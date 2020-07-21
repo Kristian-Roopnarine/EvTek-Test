@@ -5,5 +5,5 @@ app_name="v2_interface"
 
 urlpatterns = [
     path('',views.index,name='home'),
-    path('calendar/',views.CalendarView.as_view(),name="calendar")
+    path('schedule/list/',views.CalendarView.as_view(),name="schedule-list")
 ]

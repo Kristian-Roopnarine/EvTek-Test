@@ -42,6 +42,10 @@ class CalendarView(ListView):
         html_cal = cal.format_month(withyear=True)
         context['calendar'] = mark_safe(html_cal)
         return context
+    
+    def get_queryset(self,**kwargs):
+        #d = get_date(self.request.GET.get('day',None))
+        return PickUp.objects.filter(scheduled_user=self.request.user)
 
 def get_date(req_day):
     if req_day:

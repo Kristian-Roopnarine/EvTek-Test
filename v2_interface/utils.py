@@ -34,6 +34,7 @@ class Calendar(HTMLCalendar):
         cal += f'{self.formatmonthname(self.year,self.month,withyear=withyear)}\n'
         cal += f'{self.formatweekheader()}\n'
         for week in self.monthdays2calendar(self.year,self.month):
-            cal+= f'{self.formatweek(week)}\n'
+            cal+=f'{self.formatweek(week)}\n'
+        cal += '</table>'
         return cal
 
