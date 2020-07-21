@@ -1,4 +1,4 @@
-{% extends "_basev1.html" %}
+{% extends "_base.html" %}
 
 {% block content %}
 <h2>This is your dashboard.</h2>
@@ -18,7 +18,7 @@
                 <td>{{ bin_data.bin_type__name }}</td>
                 <td>{{ bin_data.total_pounds }}</td>
                 <td>{{ bin_data.completed }}</td>
-                <td><a href="{% url 'waste_bins:dashboard-pickup-dates' bin_data.bin_type__name%}">View Pick Ups</a></td>
+                <td><a href="{% url 'v2_interface:dashboard-pickup-dates' bin_data.bin_type__id %}">View Pick Ups</a></td>
             </tr>
             {% endfor %}
         

@@ -28,7 +28,7 @@ class PickUpV2(models.Model):
     # add notes
 
     def get_absolute_url(self):
-        return reverse('pickup-detail',kwargs={'pk':self.pk})
+        return reverse('v2_interface:pickup-detail',kwargs={'pk':self.pk})
 
     def __str__(self):
         return f"{self.scheduled_user} - {self.scheduled_date} - {self.bin_type}"
