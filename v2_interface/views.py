@@ -1,19 +1,23 @@
 from django.shortcuts import render
+from django.urls import reverse_lazy
 import datetime as dt
-from waste_bins.models import PickUp
+from django.contrib.auth.mixins import LoginRequiredMixin
+from .models import PickUpV2
+from .forms import PickUpForm
 from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView,UpdateView,DeleteView,CreateView
 from django.utils.safestring import mark_safe
 import datetime
 
 from .utils import Calendar
 # Create your views here.
+
 @login_required()
 def index(request):
     today = dt.date.today()
 
     # update all pick ups when user visits home page and when todays date == pick up date
-    pick_up_list = PickUp.objects.filter(scheduled_user=request.user,scheduled_date__lte=today)
+    pick_up_list = PickUpV2.objects.filter(scheduled_user=request.user,scheduled_date__lte=today)
    
     for pick_up in pick_up_list:
         if not pick_up.completed and pick_up.scheduled_date <= today:
@@ -25,8 +29,8 @@ def index(request):
         # when DoS picks up bin
     return render(request,'_base.html')
 
-class CalendarView(ListView):
-    model = PickUp
+class CalendarView(LoginRequiredMixin,ListView):
+    model = PickUpV2
     template_name = 'v2_interface/calendar.html'
 
     def get_context_data(self,**kwargs):
@@ -39,16 +43,40 @@ class CalendarView(ListView):
         # create calendar class
         cal = Calendar(d.year,d.month)
 
-        html_cal = cal.format_month(withyear=True)
+        html_cal = cal.format_month(self.request.user,withyear=True)
         context['calendar'] = mark_safe(html_cal)
         return context
     
     def get_queryset(self,**kwargs):
         #d = get_date(self.request.GET.get('day',None))
-        return PickUp.objects.filter(scheduled_user=self.request.user)
+        return PickUpV2.objects.filter(scheduled_user=self.request.user)
 
 def get_date(req_day):
     if req_day:
         year,month = (int(x) for x in req_day.split("-"))
         return date(year,month,day=1)
     return datetime.date.today()
+
+class PickUpCreateView(LoginRequiredMixin,CreateView):
+    model = PickUpV2
+    form_class = PickUpForm
+    success_url = reverse_lazy('v2_interface:schedule-list')
+    template_name = 'v2_interface/pickup_form.html'
+
+    def form_valid(self,form):
+        form.instance.user = self.request.user
+        return super(PickUpCreateView,self).form_valid(form)
+
+class PickUpDetailView(LoginRequiredMixin,DetailView):
+    model = PickUpV2
+    template_name = 'v2_interface/pickup_detail.html'
+
+class PickUpEditView(LoginRequiredMixin,UpdateView):
+    form_class = PickUpForm
+    model = PickUpV2
+    template_name = 'v2_interface/pickup_form.html'
+
+class PickUpDeleteView(LoginRequiredMixin,DeleteView):
+    model = PickUpV2
+    template_name = 'v2_interface/pickup_confirm_delete.html'
+    success_url = reverse_lazy('v2_interface:schedule-list')

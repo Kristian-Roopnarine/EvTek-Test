@@ -4,12 +4,15 @@
 {% block content %}
 <div class="container-fluid">
     <div class="row">
-
+        <a class="btn btn-success" href="{% url 'v2_interface:create-pickup' %}">Create Pick Up</a>
+    </div>
+    <div class="row">
+        
         <div class="col-9">
             {{ calendar }}
         </div>
         
-        
+        {% comment %}
         <div class="col-3">
             <ul class="list-group">
                 <h3>Pick Up Orders</h3>
@@ -20,7 +23,7 @@
                 {% endfor %}
             </ul>
         </div>
-
+        {% endcomment %}
     </div>
 </div>
 

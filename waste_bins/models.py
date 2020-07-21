@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.urls import reverse
 # Create your models here.
 
 User = get_user_model()
@@ -26,5 +27,11 @@ class PickUp(models.Model):
     completed = models.BooleanField(default=False)
     # add notes
 
+    def get_absolute_url(self):
+        return reverse('pickup-detail',kwargs={'pk':self.pk})
+
     def __str__(self):
         return f"{self.scheduled_user} - {self.scheduled_date} - {self.bin_type}"
+
+
+    
