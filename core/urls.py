@@ -21,7 +21,7 @@ urlpatterns = [
 
     # v1 is first iteration
     path('v1/home/',include('waste_bins.urls',namespace="waste_bins")),
-    path('v2/home/',include('v2_interface.urls')),
+    path('v2/home/',include('v2_interface.urls',namespace="v2_interface")),
 
     path('accounts/',include('allauth.urls'))
 ]

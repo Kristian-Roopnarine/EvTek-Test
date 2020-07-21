@@ -4,26 +4,19 @@
 {% block content %}
 <div class="container-fluid">
     <div class="row">
-        <a class="btn btn-success" href="{% url 'v2_interface:create-pickup' %}">Create Pick Up</a>
-    </div>
-    <div class="row">
         
         <div class="col-9">
             {{ calendar }}
         </div>
         
-        {% comment %}
         <div class="col-3">
-            <ul class="list-group">
-                <h3>Pick Up Orders</h3>
-                {% for object in object_list %}
-                    <li class="list-group-item">
-                        {{ object.bin_type__name }} {{object.scheduled_date}} {{object.completed }} {{ object.weight }}
-                    </li>
-                {% endfor %}
-            </ul>
+            <div class="card">
+                <div class="card-body text-center">
+                    <a class="btn btn-success" href="{% url 'v2_interface:create-pickup' %}">Create One Time Pick Up</a>
+                </div>
+            </div>
         </div>
-        {% endcomment %}
+        
     </div>
 </div>
 

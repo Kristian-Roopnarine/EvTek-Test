@@ -56,6 +56,12 @@ ACCOUNT_FORMS = {'signup': 'users.forms.CustomUserCreationForm'}
 
 
 AUTH_USER_MODEL = 'users.CustomUser'
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -145,3 +151,5 @@ STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
 
 LOGIN_REDIRECT_URL = 'v2_interface:home'
 ACCOUNT_LOGOUT_REDIRECT = 'v2_interface:home'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

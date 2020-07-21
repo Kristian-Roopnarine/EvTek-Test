@@ -10,34 +10,45 @@
 
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="{% url 'v2_interface:home' %}">DoS</a>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light py-3">
+        <a class="navbar-brand" href="#">Department of Sanitation</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
             {% if user.is_authenticated %}
-                <li class="nav-item active">
-                    <span class="navbar-text text-dark">Welcome {{user.username}}</p>
-                </li>
+                <ul class="navbar-nav">
+                    <li class="nav-item ml-3">
+                        <span class="navbar-text text-dark">Welcome {{user.username}}</span>
+                    </li>
+                    <li class="nav-item ml-3">
+                        <a class="nav-link text-dark" href="{% url 'v2_interface:home' %}">Home</a>
+                    </li>
+            
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="{% url 'v2_interface:schedule-list' %}">Schedule List</a>
+                    </li>
+                    
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="{% url 'account_logout' %}">Logout</a>
+                    </li>
+                </ul>
+            
                 
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'v2_interface:schedule-list' %}">Schedule List</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>
-                </li>
             {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'account_login' %}">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'account_signup' %}">Sign up</a>
-                </li>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account_login' %}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account_signup' %}">Sign up</a>
+                    </li>
+                </ul>
+                
             {% endif %}
             
-          </ul>
         </div>
       </nav>
 
@@ -75,12 +86,16 @@
                     </div>
                 </div>
             </div>
-            <div class="col-3">
-
+            <div class="col-3 offset-md-1">
+                <div class="card">
+                    <div class="card-body">
+                        <a class="btn btn-success" href="{% url 'v2_interface:create-pickup' %}">Create One Time Pick Up</a>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="row">
+        <div class="row mt-3">
             <div class="col">
                 {% include 'v2_interface/bin_visualization.html' %}
             </div>

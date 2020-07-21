@@ -20,7 +20,7 @@ def index(request):
     context = {'notifications':[]}
 
     # update all pick ups when user visits home page and when todays date == pick up date
-    pick_up_list = PickUpV2.objects.filter(scheduled_user=request.user,scheduled_date__lte=today)
+    pick_up_list = PickUpV2.objects.filter(scheduled_user=request.user,scheduled_date__lte=tomorrow)
     
     for pick_up in pick_up_list:
         if not pick_up.completed and pick_up.scheduled_date <= today:
@@ -33,8 +33,8 @@ def index(request):
                 pick_up=pick_up,
                 description = f"Your {pick_up.bin_type.name} will be picked up tomorrow!"
             )
-    context['confirm_pickups'] = ConfirmPickUp.objects.filter(date=today)
-    context['pickup_reminder'] = PickUpReminder.objects.filter(date=today)
+    context['confirm_pickups'] = ConfirmPickUp.objects.filter(date=today,pick_up__scheduled_user=request.user)
+    context['pickup_reminder'] = PickUpReminder.objects.filter(date=today,pick_up__scheduled_user=request.user)
 
     pick_up_list = PickUpV2.objects.filter(scheduled_user=request.user,completed=True).order_by('-completed')
     context['bin_type_data'] = pick_up_list.values('bin_type__name','bin_type__id').annotate(total_pounds = Sum('weight'),completed=Count('completed'))
