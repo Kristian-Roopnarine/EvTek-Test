@@ -21,17 +21,12 @@
                 <li class="nav-item active">
                     <span class="navbar-text text-dark">Welcome {{user.username}}</p>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Profile</a>
-                </li>
+                
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'v2_interface:schedule-list' %}">Schedule List</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'v2_interface:dashboard' %}">Dashboard</a>
+                    <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>
                 </li>
             {% else %}
                 <li class="nav-item">
@@ -45,15 +40,121 @@
           </ul>
         </div>
       </nav>
+
     <h1>{% block title %}{% endblock title %}</h1>
 
-
     {% block content %}
-    <h1> Welcome {{user.username}} </h1>
-    {% endblock content %}
     
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+
+    <div class="container">
+        
+        <div class="row">
+            
+            <div class="col-7">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Pick up notifications</h3>
+                    </div>
+                    <div class="card-body">
+                        <h4>Completed Pick Ups</h4>
+                        <ul>
+                            {% for notification in confirm_pickups %}
+                                <li>{{ notification }}</li>
+                            {% endfor %}
+                            
+                        </ul>
+                    </div>
+                    <hr />
+                    <div class="card-body">
+                        <h4>Upcoming Pick Ups</h4>
+                        <ul>
+                            {% for notification in pickup_reminder %}
+                                <li>{{ notification }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                {% include 'v2_interface/bin_visualization.html' %}
+            </div>
+            <div class="col">
+                {% include 'v2_interface/dashboard.html' %}
+            </div>
+        </div>
+    </div>
+
+    
+
+        
+    {% endblock content %}
+
+    
+    
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var barData;
+        $.ajax({
+            type:"GET",
+            url:"bin_data/",
+            success:function(data){
+                barData = data
+                console.log(barData)
+                var myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: barData.labels,
+                        datasets: [{
+                            label: 'Weight collected from completed pick ups',
+                            data: barData.data,
+                            /*
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            */
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                },
+                            }]
+                        }
+                    }
+                });
+            }
+        })
+        
+        
+        
+    </script>
 </body>
 </html>

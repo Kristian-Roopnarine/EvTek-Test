@@ -12,5 +12,6 @@ urlpatterns = [
 
 
     path('dashboard/',views.dashboard,name="dashboard"),
-    path('dashboard/bin-pickup-dates/<str:bin_type_name>/',views.BinPickUpDates.as_view(),name="dashboard-pickup-dates")
+    path('dashboard/bin-pickup-dates/<str:bin_type_name>/',views.BinPickUpDates.as_view(),name="dashboard-pickup-dates"),
+    
 ]

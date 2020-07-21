@@ -32,3 +32,19 @@ class PickUpV2(models.Model):
 
     def __str__(self):
         return f"{self.scheduled_user} - {self.scheduled_date} - {self.bin_type}"
+
+class ConfirmPickUp(models.Model):
+
+    description = models.CharField(max_length=200)
+    pick_up = models.OneToOneField(PickUpV2,on_delete=models.CASCADE)
+    date = models.DateField(auto_now_add=True)
+    def __str__(self):
+        return f'{self.description}'
+
+class PickUpReminder(models.Model):
+    description = models.CharField(max_length=100)
+    pick_up = models.OneToOneField(PickUpV2,on_delete=models.CASCADE)
+    date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.description}'

@@ -1,34 +1,66 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
-import datetime as dt
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import PickUpV2,WasteBinTypeV2
+from .models import PickUpV2,WasteBinTypeV2,ConfirmPickUp,PickUpReminder
 from .forms import PickUpForm
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView,UpdateView,DeleteView,CreateView
 from django.utils.safestring import mark_safe
-import datetime
+from datetime import datetime, timedelta,date
 from django.db.models import Sum,Count
+from django.http import JsonResponse
 
 from .utils import Calendar
 
 # Create your views here.
 @login_required()
 def index(request):
-    today = dt.date.today()
+    today = date.today()
+    tomorrow = today + timedelta(1)
+    context = {'notifications':[]}
 
     # update all pick ups when user visits home page and when todays date == pick up date
     pick_up_list = PickUpV2.objects.filter(scheduled_user=request.user,scheduled_date__lte=today)
-   
+    
     for pick_up in pick_up_list:
         if not pick_up.completed and pick_up.scheduled_date <= today:
             pick_up.completed = True
             pick_up.save()
+            confirm_note = ConfirmPickUp.objects.create(description=f"Your {pick_up.bin_type.name} was picked up today!",pick_up=pick_up)
+            confirm_note.save()
+        if pick_up.scheduled_date == tomorrow:
+            obj,created = PickUpReminder.objects.get_or_create(
+                pick_up=pick_up,
+                description = f"Your {pick_up.bin_type.name} will be picked up tomorrow!"
+            )
+    context['confirm_pickups'] = ConfirmPickUp.objects.filter(date=today)
+    context['pickup_reminder'] = PickUpReminder.objects.filter(date=today)
 
-    # set up notifications for pick ups
-        # when pick up is tomorrow
-        # when DoS picks up bin
-    return render(request,'_base.html')
+    pick_up_list = PickUpV2.objects.filter(scheduled_user=request.user,completed=True).order_by('-completed')
+    context['bin_type_data'] = pick_up_list.values('bin_type__name','bin_type__id').annotate(total_pounds = Sum('weight'),completed=Count('completed'))
+    return render(request,'_base.html',context)
+
+# visualiztion view
+# needs to return all of the bin type names for a person in one list, then the total pounds collected for that bin
+
+
+@login_required()
+def bin_pound_data(request):
+    completed_list = PickUpV2.objects.filter(scheduled_user=request.user,completed=True).values('bin_type__name').annotate(total_pounds=Sum('weight'))
+
+    name_array=[]
+    weight_array=[]
+    for data in completed_list:
+        name = data['bin_type__name']
+        weight = data['total_pounds']
+        name_array.append(name)
+        weight_array.append(weight)
+    data = {
+        'labels':name_array,
+        'data':weight_array
+    }
+
+    return JsonResponse(data)
 
 class CalendarView(LoginRequiredMixin,ListView):
     model = PickUpV2
@@ -55,7 +87,7 @@ def get_date(req_day):
     if req_day:
         year,month = (int(x) for x in req_day.split("-"))
         return date(year,month,day=1)
-    return datetime.date.today()
+    return date.today()
 
 class PickUpCreateView(LoginRequiredMixin,CreateView):
     model = PickUpV2
@@ -81,20 +113,12 @@ class PickUpDeleteView(LoginRequiredMixin,DeleteView):
     template_name = 'v2_interface/pickup_confirm_delete.html'
     success_url = reverse_lazy('v2_interface:schedule-list')
 
-@login_required()
-def dashboard(request):
-    context = {}
-    pick_up_list = PickUpV2.objects.filter(scheduled_user=request.user,completed=True).order_by('-completed')
-    context['bin_type_data'] = pick_up_list.values('bin_type__name','bin_type__id').annotate(total_pounds = Sum('weight'),completed=Count('completed'))
-    return render(request,'v2_interface/dashboard.html',context)
-
 
 class BinPickUpDates(LoginRequiredMixin,ListView):
     template_name = "v2_interface/bin_pickup_dates.html"
     context_object_name = "bin_dates"
 
     def get_queryset(self,**kwargs):
-        print(kwargs)
         return PickUpV2.objects.filter(scheduled_user=self.request.user,bin_type__id=self.kwargs['pk'],completed=True)
 
     def get_context_data(self,**kwargs):

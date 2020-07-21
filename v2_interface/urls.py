@@ -12,7 +12,8 @@ urlpatterns = [
     path('schedule/list/pickup/edit/<int:pk>/',views.PickUpEditView.as_view(),name='edit-pickup'),
     path('schedule/list/pickup/create/',views.PickUpCreateView.as_view(),name='create-pickup'),
 
-    path('dashboard/',views.dashboard,name="dashboard"),
-    path('dashboard/bin-pickup-dates/<int:pk>/',views.BinPickUpDates.as_view(),name="dashboard-pickup-dates")
+    #path('dashboard/',views.dashboard,name="dashboard"),
+    path('dashboard/bin-pickup-dates/<int:pk>/',views.BinPickUpDates.as_view(),name="dashboard-pickup-dates"),
+    path('bin_data/',views.bin_pound_data)
 
 ]
