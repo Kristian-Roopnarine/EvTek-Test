@@ -1,4 +1,3 @@
-"This is a repository for the code test by EvTek" 
 Tech stack: Python, jQuery, Django, PostgreSQL, Docker
 
 <h2> Django Apps </h2>
