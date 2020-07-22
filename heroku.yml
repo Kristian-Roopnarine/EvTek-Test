@@ -5,6 +5,7 @@ setup:
 build:
     docker:
         web: Dockerfile
+        worker: core/Dockerfile
 
 release:
     image: web
