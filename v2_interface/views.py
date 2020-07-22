@@ -9,7 +9,6 @@ from django.utils.safestring import mark_safe
 from datetime import datetime, timedelta,date
 from django.db.models import Sum,Count
 from django.http import JsonResponse
-
 from .utils import Calendar
 
 # Create your views here.
