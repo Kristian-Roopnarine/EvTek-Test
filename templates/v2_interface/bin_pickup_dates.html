@@ -1,10 +1,18 @@
 {% extends "_base.html" %}
 
 {% block content %}
-<h2>You're viewing your completed pick up dates for {{ bin_name }} bins.</h2>
-<ul>
-    {% for dates in bin_dates %}
-        <li>{{ dates.scheduled_date }}</li>
-    {% endfor %}
-</ul>
+<div class="container">
+    <div class="row justify-content-center">
+        <h2>You're viewing your completed pick up dates for the {{ bin_name }} bin.</h2>
+        <div class="col-4">
+            <ul class="list-group">
+                {% for dates in bin_dates %}
+                    <li class="list-group-item">{{ dates.scheduled_date }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+
 {% endblock content %}
