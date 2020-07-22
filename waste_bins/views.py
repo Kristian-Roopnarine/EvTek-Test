@@ -27,7 +27,7 @@ def index(request):
     # set up notifications for pick ups
         # when pick up is tomorrow
         # when DoS picks up bin
-    return render(request,'_base.html')
+    return render(request,'_basev1.html')
 
 # list view for scheduled pick ups
 class PickUpList(LoginRequiredMixin,ListView):
