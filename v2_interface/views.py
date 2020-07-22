@@ -36,7 +36,7 @@ def index(request):
     context['confirm_pickups'] = ConfirmPickUp.objects.filter(date=today,pick_up__scheduled_user=request.user)
     context['pickup_reminder'] = PickUpReminder.objects.filter(date=today,pick_up__scheduled_user=request.user)
 
-    pick_up_list = PickUpV2.objects.filter(scheduled_user=request.user,completed=True).order_by('-completed')
+    pick_up_list = pick_up_list.filter(completed=True).order_by('-completed')
     context['bin_type_data'] = pick_up_list.values('bin_type__name','bin_type__id').annotate(total_pounds = Sum('weight'),completed=Count('completed'))
     return render(request,'_base.html',context)
 

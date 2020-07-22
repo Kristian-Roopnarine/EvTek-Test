@@ -61,7 +61,7 @@
         
         <div class="row">
             
-            <div class="col-7">
+            <div class="col-md-7 col-sm-12">
                 <div class="card">
                     <div class="card-header">
                         <h3>Pick up notifications</h3>
@@ -86,7 +86,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-3 offset-md-1">
+            <div class="col-md-3 col-sm-12 offset-md-1">
                 <div class="card">
                     <div class="card-body">
                         <a class="btn btn-success" href="{% url 'v2_interface:create-pickup' %}">Create One Time Pick Up</a>
@@ -96,10 +96,10 @@
         </div>
 
         <div class="row mt-3">
-            <div class="col">
+            <div class="col-md-6 col-sm-12">
                 {% include 'v2_interface/bin_visualization.html' %}
             </div>
-            <div class="col">
+            <div class="col-md-6 col-sm-12">
                 {% include 'v2_interface/dashboard.html' %}
             </div>
         </div>
