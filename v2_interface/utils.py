@@ -34,8 +34,7 @@ class Calendar(HTMLCalendar):
         return f'<tr> {week} </tr>'
     
     def format_month(self, user, withyear=True):
-        pickup_list = PickUpV2.objects.filter(scheduled_user=user)
-
+        pickup_list = PickUpV2.objects.filter(scheduled_user=user,scheduled_date__month__lte=self.month)
         cal = f"<table border='0' cellpadding='0' cellspacing='0' class='calendar'>\n"
         
         cal += f'{self.formatmonthname(self.year,self.month,withyear=withyear)}\n'

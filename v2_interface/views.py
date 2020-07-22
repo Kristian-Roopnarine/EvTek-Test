@@ -1,8 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import PickUpV2,WasteBinTypeV2,ConfirmPickUp,PickUpReminder
-from .forms import PickUpForm
+from .forms import PickUpForm,RecurringPickUpForm
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView,UpdateView,DeleteView,CreateView
 from django.utils.safestring import mark_safe
@@ -40,9 +40,29 @@ def index(request):
     context['bin_type_data'] = pick_up_list.values('bin_type__name','bin_type__id').annotate(total_pounds = Sum('weight'),completed=Count('completed'))
     return render(request,'_base.html',context)
 
-# visualiztion view
-# needs to return all of the bin type names for a person in one list, then the total pounds collected for that bin
 
+@login_required()
+def create_recurring(request):
+    form = RecurringPickUpForm(request.POST or None)
+    if form.is_valid():
+        bin_type = form.cleaned_data['bin_type']
+        weight = form.cleaned_data['weight']
+        date = form.cleaned_data['scheduled_date']
+        number_of_weeks = form.cleaned_data['recurring']
+        user = request.user
+        for week in range(number_of_weeks):
+            new_pick_up = PickUpV2.objects.create(
+                bin_type=bin_type,
+                scheduled_date=date,
+                scheduled_user=user,
+                weight=weight,
+                completed=False
+            )
+            new_pick_up.save()
+            date = date + timedelta(7)
+        return redirect('v2_interface:schedule-list')
+    return render(request,'v2_interface/recurring_form.html',context={'form':form})
+    
 
 @login_required()
 def bin_pound_data(request):
@@ -80,8 +100,8 @@ class CalendarView(LoginRequiredMixin,ListView):
         return context
     
     def get_queryset(self,**kwargs):
-        #d = get_date(self.request.GET.get('day',None))
-        return PickUpV2.objects.filter(scheduled_user=self.request.user)
+        d = date.today()
+        return PickUpV2.objects.filter(scheduled_user=self.request.user,scheduled_date__month__lte=d.month)
 
 def get_date(req_day):
     if req_day:
